@@ -94,3 +94,11 @@ body {
 .clearfix:after {
     clear: both;
 }
+
+.navbar div.links-container a:hover{
+  color : rgb(233,50,117);
+}
+
+.navbar div.links-container a:active{
+  background-color: white;
+}
