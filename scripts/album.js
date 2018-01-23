@@ -44,8 +44,7 @@ var albumThird = {
     ]
 };
 var createSongRow = function(songNumber, songName, songLength) {
-     var template =
-        '<tr class="album-view-song-item">'
+     var template ='<tr class="album-view-song-item">'
       + '  <td class="song-item-number">' + songNumber + '</td>'
       + '  <td class="song-item-title">' + songName + '</td>'
       + '  <td class="song-item-duration">' + songLength + '</td>'
@@ -86,15 +85,12 @@ var createSongRow = function(songNumber, songName, songLength) {
    }
 
  };
- window.onload = function() {
+
      setCurrentAlbum(albumPicasso);
-     var i=1;
+     var index=0;
      var album=[albumPicasso, albumMarconi, albumThird];
      albumImage.addEventListener("click", function(event) {
-       setCurrentAlbum(album[i]);
-       i++;
-       if (i == album.length){
-         i=0;
-       }
+
+       setCurrentAlbum(albums[(index+4)%3]);
+   index++;
      });
- };
