@@ -28,6 +28,21 @@ var albumMarconi = {
         { title: 'Wrong phone number', duration: '2:15'}
     ]
 };
+
+var albumThird = {
+    title: 'The Third'
+    artist: 'Artist three',
+    label: 'TT',
+    year: '1989',
+    albumArtUrl: 'assets/images/album_covers/20.png',
+    songs: [
+        { title: 'Twilight', duration: '1:01' },
+        { title: 'in the clouds', duration: '5:01' },
+        { title: 'the trio', duration: '3:21'},
+        { title: 'the new way', duration: '3:14' },
+        { title: 'Trial and error', duration: '2:15'}
+    ]
+};
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -40,13 +55,13 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
+ var albumTitle = document.getElementsByClassName('album-view-title')[0];
+ var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+ var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+ var albumImage = document.getElementsByClassName('album-cover-art')[0];
+ var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
  var setCurrentAlbum = function(album) {
      // #1
-     var albumTitle = document.getElementsByClassName('album-view-title')[0];
-     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-     var albumImage = document.getElementsByClassName('album-cover-art')[0];
-     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
      // #2
      albumTitle.firstChild.nodeValue = album.title;
@@ -65,4 +80,13 @@ var createSongRow = function(songNumber, songName, songLength) {
 
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
+     var i=1;
+     var album=[albumPicasso, albumMarconi, albumThird];
+     albumImage.addEventListener("click", function(event) {
+       setCurrentAlbum(album[i]);
+       i++;
+       if (i == album.length){
+         i=0;
+       }
+     });
  };
