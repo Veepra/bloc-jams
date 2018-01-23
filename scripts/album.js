@@ -55,29 +55,37 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
- var albumTitle = document.getElementsByClassName('album-view-title')[0];
- var albumArtist = document.getElementsByClassName('album-view-artist')[0];
- var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
- var albumImage = document.getElementsByClassName('album-cover-art')[0];
- var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
- var setCurrentAlbum = function(album) {
-     // #1
 
-     // #2
-     albumTitle.firstChild.nodeValue = album.title;
-     albumArtist.firstChild.nodeValue = album.artist;
-     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-     albumImage.setAttribute('src', album.albumArtUrl);
 
-     // #3
-     albumSongList.innerHTML = '';
+
+ window.onload = function() {
+
+   var albumImage = document.getElementsByClassName('album-cover-art')[0];
+
+//creates an album with its song list
+ var setCurrentAlbum = function(album){
+
+     // #1 get handles for each element
+   var albumTitle = document.getElementsByClassName('album-view-title')[0];
+   var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+   var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+   var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
+
+     // #2 set album info
+   albumImage.setAttribute('src', album.albumArtUrl);
+   albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+   albumTitle.firstChild.nodeValue = album.title;
+   albumArtist.firstChild.nodeValue = album.artist;
+
+     // #3 clear song list
+    albumSongList.innerHTML = '';
 
      // #4
-     for (var i = 0; i < album.songs.length; i++) {
-         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
-     }
- };
+   for(var i=0; i<album.songs.length; i++){
+     albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+   }
 
+ };
  window.onload = function() {
      setCurrentAlbum(albumPicasso);
      var i=1;
