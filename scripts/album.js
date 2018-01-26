@@ -28,24 +28,11 @@ var albumMarconi = {
         { title: 'Wrong phone number', duration: '2:15'}
     ]
 };
-
-var albumThird = {
-    title: 'The Third'
-    artist: 'Artist three',
-    label: 'TT',
-    year: '1989',
-    albumArtUrl: 'assets/images/album_covers/20.png',
-    songs: [
-        { title: 'Twilight', duration: '1:01' },
-        { title: 'in the clouds', duration: '5:01' },
-        { title: 'the trio', duration: '3:21'},
-        { title: 'the new way', duration: '3:14' },
-        { title: 'Trial and error', duration: '2:15'}
-    ]
-};
 var createSongRow = function(songNumber, songName, songLength) {
-     var template ='<tr class="album-view-song-item">'
+     var template =
+        '<tr class="album-view-song-item">'
       + '  <td class="song-item-number">' + songNumber + '</td>'
+       + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
       + '  <td class="song-item-title">' + songName + '</td>'
       + '  <td class="song-item-duration">' + songLength + '</td>'
       + '</tr>'
@@ -54,43 +41,48 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
+ var setCurrentAlbum = function(album) {
+     // #1
+     var albumTitle = document.getElementsByClassName('album-view-title')[0];
+     var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+     var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+     var albumImage = document.getElementsByClassName('album-cover-art')[0];
+     var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 
+     // #2
+     albumTitle.firstChild.nodeValue = album.title;
+     albumArtist.firstChild.nodeValue = album.artist;
+     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
+     albumImage.setAttribute('src', album.albumArtUrl);
 
+     // #3
+     albumSongList.innerHTML = '';
+
+     // #4
+     for (var i = 0; i < album.songs.length; i++) {
+         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
+     }
+ };
 
  window.onload = function() {
 
-   var albumImage = document.getElementsByClassName('album-cover-art')[0];
-
-//creates an album with its song list
- var setCurrentAlbum = function(album){
-
-     // #1 get handles for each element
-   var albumTitle = document.getElementsByClassName('album-view-title')[0];
-   var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-   var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-   var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
-
-     // #2 set album info
-   albumImage.setAttribute('src', album.albumArtUrl);
-   albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-   albumTitle.firstChild.nodeValue = album.title;
-   albumArtist.firstChild.nodeValue = album.artist;
-
-     // #3 clear song list
-    albumSongList.innerHTML = '';
-
-     // #4
-   for(var i=0; i<album.songs.length; i++){
-     albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
-   }
+   var songListContainer = document.getElementsByClassName('album-view-song-list')[0];
+   var songRows = document.getElementsByClassName('album-view-song-item');
+   var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+     setCurrentAlbum(albumPicasso);
+     songListContainer.addEventListener('mouseover', function(event) {
+              // #1
+              console.log(event.target);
+              if (event.target.parentElement.className === 'album-view-song-item') {
+            // Change the content from the number to the play button's HTML
+             event.target.parentElement.querySelector('.song-item-number').innerHTML = playButtonTemplate;
+        }
+          });
+          for (var i = 0; i < songRows.length; i++) {
+         songRows[i].addEventListener('mouseleave', function(event) {
+             // Revert the content back to the number
+               this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+         });
+     }
 
  };
-
-     setCurrentAlbum(albumPicasso);
-     var index=0;
-     var album=[albumPicasso, albumMarconi, albumThird];
-     albumImage.addEventListener("click", function(event) {
-
-       setCurrentAlbum(albums[(index+4)%3]);
-   index++;
-     });
